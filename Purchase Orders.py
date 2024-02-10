@@ -1,22 +1,27 @@
-# Global dictionary to store purchase orders
+import pandas as pd
+
+# Global dictionary to store PO
 purchase_orders = {}
 
 
 def create_purchase_order(po_num):
-    FY1, FY2,  = 2023, 2024
+    FY1, FY2, = 2023, 2024
     vendor = input("Enter vendor name: ")
-    item = input("Enter item name: ")
-    quantity = int(input("Enter quantity: "))
-    unit_price = float(input("Enter unit price: "))
+    no_of_items = int(input("Enter the number of items: "))  # Getting Input the number of items in the PO
+    item, quantity, unit_price, cost, total_cost = [], [], [], [], []
 
-    # Generate a unique purchase order number
+    # Using a For Loop to get the details for N number of Items
+    for i in range(no_of_items):
+        item += [input("Enter item name: ")]
+        quantity += [int(input("Enter quantity: "))]
+        unit_price += [float(input("Enter unit price: "))]
+        cost += [quantity[i] * unit_price[i]]
+        total_cost += [cost[i] * 1.18]
+
+    # Generate a unique PO number
     order_number = str(f'Company_Name/{FY1}-{FY2}/0{po_num}')
 
-    # Calculate total cost
-    cost = quantity * unit_price
-    total_cost = cost * 1.18
-
-    # Store the purchase order in the dictionary
+    # Store the PO in the dictionary
     purchase_orders[order_number] = {
         'vendor': vendor,
         'item': item,
@@ -32,30 +37,18 @@ def view_purchase_order(order_number):
     if order_number in purchase_orders:
         order_details = purchase_orders[order_number]
         print(f"Purchase Order {order_number} Details:")
-        for key, value in order_details.items():
-            print(f"{key}: {value}")
-    else:
-        print("Purchase Order not found.")
+        print(pd.DataFrame(order_details))
 
 
 def update_purchase_order(order_number):
     if order_number in purchase_orders:
         print("Update Purchase Order:")
-        item = input("Enter updated item name (press Enter to keep the existing value): ")
-        quantity = int(input("Enter updated quantity (press Enter to keep the existing value): "))
-        unit_price = float(input("Enter updated unit price (press Enter to keep the existing value): "))
-
-        # Update purchase order details
-        if item:
-            purchase_orders[order_number]['item'] = item
-        if quantity:
-            purchase_orders[order_number]['quantity'] = quantity
-        if unit_price:
-            purchase_orders[order_number]['unit_price'] = unit_price
-
-        # Update total cost
-        purchase_orders[order_number]['total_cost'] = purchase_orders[order_number]['quantity'] * \
-                                                      purchase_orders[order_number]['unit_price']
+        for i in range(len(purchase_orders[order_number]['item'])):
+            purchase_orders[order_number]['item'][i] = input(f"Enter updated item {i+1} name (press Enter to keep the existing value): ")
+            purchase_orders[order_number]['quantity'][i] = int(input("Enter updated quantity (press Enter to keep the existing value): "))     # Update total cost
+            purchase_orders[order_number]['unit_price'][i] = int(input("Enter updated Unit Price (press Enter to keep the existing value): "))
+            purchase_orders[order_number]['total_cost'][i] = purchase_orders[order_number]['quantity'][i] * \
+                                                      purchase_orders[order_number]['unit_price'][i]
 
         print("Purchase Order updated successfully.")
     else:
@@ -88,7 +81,7 @@ while run_time:
           'To Delete a Purchase Order, Enter 9 \n'
           'To Exit, Enter 0\n'
           '------------------------------')
-    po_command=int(input('Enter the command: '))
+    po_command = int(input('Enter the command: '))
     if po_command == 1:
         create_purchase_order(PO_num)
         PO_num += 1
