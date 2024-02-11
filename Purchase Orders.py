@@ -46,7 +46,7 @@ def view_purchase_order(order_number):
 def update_purchase_order(order_number):
     if order_number in purchase_orders:
         print("Update Purchase Order:")
-        tax = (float(input("Enter the Tax Percentage: ")))/100
+        tax = (float(input("Enter the Tax Percentage: "))) / 100
         for i in range(len(purchase_orders[order_number]['item'])):
             # Update Item Names, Quantity, Unit Price and Total Cost
             purchase_orders[order_number]['item'][i] = input(f"Enter updated item {i + 1} "
@@ -57,7 +57,6 @@ def update_purchase_order(order_number):
                                                                        "(press Enter to keep the existing value): "))
             purchase_orders[order_number]['total_cost'][i] = purchase_orders[order_number]['quantity'][i] * \
                                                              purchase_orders[order_number]['unit_price'][i] * tax
-
         print("Purchase Order updated successfully.")
     else:
         print("Purchase Order not found.")
