@@ -5,9 +5,11 @@ import pandas as pd
 purchase_orders = {}
 
 
-def create_purchase_order(fy1, fy2, po_num):
+def create_purchase_order():
+    global FY1, FY2, PO_num
     vendor = input("Enter Vendor Name: ")
     no_of_items = int(input("Enter the number of Items: "))  # Getting Input the number of items in the PO
+    tax = float(input("Enter the Tax Percentage: "))
     item, quantity, unit_price, cost, total_cost = [], [], [], [], []
 
     # For-Loop to get the details for N number of Items
@@ -16,10 +18,10 @@ def create_purchase_order(fy1, fy2, po_num):
         quantity += [int(input("Enter Quantity: "))]
         unit_price += [float(input("Enter Unit Price: "))]
         cost += [quantity[i] * unit_price[i]]
-        total_cost += [cost[i] * 1.18]
+        total_cost += [cost[i] * tax]
 
     # Generate a unique PO number
-    order_number = str(f'Company_Name/{fy1}-{fy2}/0{po_num}')
+    order_number = str(f'Company_Name/{FY1}-{FY2}/0{PO_num}')
 
     # Store the PO in the dictionary
     purchase_orders[order_number] = {
@@ -43,17 +45,17 @@ def view_purchase_order(order_number):
 def update_purchase_order(order_number):
     if order_number in purchase_orders:
         print("Update Purchase Order:")
+        tax = (float(input("Enter the Tax Percentage: ")))/100
         for i in range(len(purchase_orders[order_number]['item'])):
-            # Update Item Names and Quantity
+            # Update Item Names, Quantity, Unit Price and Total Cost
             purchase_orders[order_number]['item'][i] = input(f"Enter updated item {i + 1} "
                                                              f"name (press Enter to keep the existing value): ")
             purchase_orders[order_number]['quantity'][i] = int(input("Enter updated quantity "
                                                                      "(press Enter to keep the existing value): "))
-            # Update Unit Price and Total Cost
             purchase_orders[order_number]['unit_price'][i] = int(input("Enter updated Unit Price "
                                                                        "(press Enter to keep the existing value): "))
             purchase_orders[order_number]['total_cost'][i] = purchase_orders[order_number]['quantity'][i] * \
-                                                             purchase_orders[order_number]['unit_price'][i]
+                                                             purchase_orders[order_number]['unit_price'][i] * tax
 
         print("Purchase Order updated successfully.")
     else:
@@ -83,6 +85,7 @@ def change_financial_year():
     PO_num = 1
     print(f'Financial Years changed to {FY1}-{FY2}')
 
+
 run_time = True
 FY1, FY2, PO_num = 2023, 2024, 1
 while run_time:
@@ -97,7 +100,7 @@ while run_time:
           '------------------------------\n')
     po_command = int(input('Enter the command: '))
     if po_command == 1:
-        create_purchase_order(FY1, FY2, PO_num)
+        create_purchase_order()
         PO_num += 1
     elif po_command == 2:
         list_all_purchase_orders()
