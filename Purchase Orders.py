@@ -45,6 +45,7 @@ def view_purchase_order(order_number):
         print(res)
 
 
+
 def update_purchase_order(order_number):
     if order_number in purchase_orders:
         print("Update Purchase Order:")
