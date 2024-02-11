@@ -22,6 +22,7 @@ def create_purchase_order():
 
     # Generate a unique PO number
     order_number = str(f'Company_Name/{FY1}-{FY2}/0{PO_num}')
+    PO_num += 1
 
     # Store the PO in the dictionary
     purchase_orders[order_number] = {
@@ -101,7 +102,6 @@ while run_time:
     po_command = int(input('Enter the command: '))
     if po_command == 1:
         create_purchase_order()
-        PO_num += 1
     elif po_command == 2:
         list_all_purchase_orders()
     elif po_command == 3:
