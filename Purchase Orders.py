@@ -40,7 +40,9 @@ def view_purchase_order(order_number):
     if order_number in purchase_orders:
         order_details = purchase_orders[order_number]
         print(f"Purchase Order {order_number} Details:")
-        print(pd.DataFrame(order_details))
+        res=pd.DataFrame(order_details)
+        res.index +=1
+        print(res)
 
 
 def update_purchase_order(order_number):
